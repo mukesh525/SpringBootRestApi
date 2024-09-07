@@ -1,25 +1,37 @@
 package com.springdemo.mycoolapp.rest;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 public class Course {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically generate ID
+    private Long id;
 
-    public Course(long id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-    }
+    private String title;
+    private String description;
 
+    // Default constructor
     public Course() {
         super();
     }
 
-    public long getId() {
+    // Constructor with parameters
+    public Course(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
+    // Getters and Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,9 +50,6 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String title;
-    private String description;
 
     @Override
     public String toString() {

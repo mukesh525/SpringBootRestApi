@@ -1,5 +1,6 @@
 package com.springdemo.mycoolapp.services;
 
+import com.springdemo.mycoolapp.dao.CourseDao;
 import com.springdemo.mycoolapp.rest.Course;
 
 import java.util.List;

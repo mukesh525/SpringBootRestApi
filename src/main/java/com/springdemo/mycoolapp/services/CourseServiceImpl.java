@@ -1,71 +1,49 @@
 package com.springdemo.mycoolapp.services;
 
+import com.springdemo.mycoolapp.dao.CourseDao;
 import com.springdemo.mycoolapp.rest.Course;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    List<Course> list;
-
-    public CourseServiceImpl() {
-        this.list = new ArrayList<>();
-        list.add(new Course(145, "Java Core", "this course contains basic"));
-        list.add(new Course(146, "Spring Boot", "this course contains basic"));
-    }
+    @Autowired
+    private CourseDao courseDao;
 
     @Override
     public List<Course> getCourses() {
-        return list;
+        return this.courseDao.findAll();
     }
 
     @Override
     public Course getCourse(Long courseId) {
-        Course course = null;
-        for (Course course1 : this.list) {
-            if (course1.getId() == courseId) {
-                course = course1;
-                break;
-            }
-        }
-
-        return course;
+        Optional<Course> course = this.courseDao.findById(courseId);
+        return course.orElse(null); // Return the course if found, or null if not found
     }
-
-    @Override
-    public Course deleteCourse(Long courseId) {
-        Course courseToRemove = null;
-
-        for (Course course : this.list) {
-            if (course.getId() == courseId) {
-                courseToRemove = course;
-                this.list.remove(course); // Remove the course from the list
-                break;
-            }
-        }
-
-        return courseToRemove; // Return the removed course, or null if not found
-    }
-
 
     @Override
     public Course addCourse(Course course) {
-        this.list.add(course);
-        return course;
+        return this.courseDao.save(course); // Save and return the course
     }
 
     @Override
     public Course updateCourse(Course course) {
-        for (Course existingCourse : this.list) {
-            if (existingCourse.getId() == (course.getId())) {
-                // Update the details of the course
-                existingCourse.setTitle(course.getTitle());
-                existingCourse.setDescription(course.getDescription());
-                return existingCourse; // Return the updated course
-            }
+        if (this.courseDao.existsById(course.getId())) {
+            return this.courseDao.save(course); // Update and return the course
+        }
+        return null; // Return null if the course does not exist
+    }
+
+    @Override
+    public Course deleteCourse(Long courseId) {
+        Optional<Course> courseToRemove = this.courseDao.findById(courseId);
+        if (courseToRemove.isPresent()) {
+            this.courseDao.deleteById(courseId); // Delete the course by ID
+            return courseToRemove.get(); // Return the removed course
         }
         return null; // Return null if the course is not found
     }
