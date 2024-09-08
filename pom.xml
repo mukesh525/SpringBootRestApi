@@ -11,6 +11,7 @@
     <groupId>com.springdemo</groupId>
     <artifactId>mycoolapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+<!--    <packaging>war</packaging>-->
     <name>mycoolapp</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -41,7 +42,6 @@
             <artifactId>spring-kafka</artifactId>
             <version>3.1.1</version> <!-- Use the latest stable version available -->
         </dependency>
-
 
 
         <dependency>
